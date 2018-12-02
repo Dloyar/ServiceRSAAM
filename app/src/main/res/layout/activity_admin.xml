@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".activities.Login">
+    tools:context=".Admin">
 
     <Button
         android:id="@+id/buttonAdd"
@@ -46,7 +46,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
-        android:text="Services" />
+        android:text="Services"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/textView3"
