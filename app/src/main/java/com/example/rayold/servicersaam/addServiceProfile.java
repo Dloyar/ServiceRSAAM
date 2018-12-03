@@ -6,91 +6,56 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
 public class addServiceProfile extends AppCompatActivity {
+    String serviceName;
+    TextView serviceNameView;
+    Button btnAdd, btnFSList,btnSLView;
+    DatabaseHelper db;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_service_profile);
-
         db = new DatabaseHelper(this);
-        service= (EditText)findViewById(R.id.editService);
-        hourlyRate = (EditText)findViewById(R.id.editHourlyPrice);
-        edit = (Button)findViewById(R.id.buttonEdit);
-        add = (Button)findViewById(R.id.buttonAdd);
-        delete = (Button)findViewById(R.id.buttonDelete);
-        listService = (Button)findViewById(R.id.buttonService);
+        serviceName = getIntent().getStringExtra("SERVICE");
 
-        listService.setOnClickListener(new View.OnClickListener() {
+        serviceNameView = findViewById((R.id.ServiceName));
+
+        serviceNameView.setText(serviceName);
+
+        btnAdd = findViewById(R.id.btnAdd);
+        btnSLView = findViewById(R.id.btnServiceList);
+        btnFSList = findViewById(R.id.btnFournisseurService);
+
+        btnSLView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Admin.this, ServiceList.class);
-                startActivity(intent);
-            }
-        });
-        add.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                String s1 = service.getText().toString();
-                String s2 = hourlyRate.getText().toString();
-
-                if (s1.equals("") || s2.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Fields are empty", Toast.LENGTH_SHORT).show();
-                }else if(db.serviceNameHourlyRate(s1)==true){
-                    Toast.makeText(getApplicationContext(), "This service already exists", Toast.LENGTH_SHORT).show();
-                }else{
-                    Boolean insert = db.insertService(s1, s2);
-                    if (insert == true) {
-                        Toast.makeText(getApplicationContext(), "Service Adding Successful", Toast.LENGTH_SHORT).show();
-                        service.setText("");
-                        hourlyRate.setText("");
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Service Adding Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                Intent i = new Intent(addServiceProfile.this, FournisseurServiceFromAdmin.class);
+                startActivity(i);
             }
         });
 
-        delete.setOnClickListener(new View.OnClickListener() {
+        btnAdd.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                String s1 = service.getText().toString();
-                if(s1.equals("")){
-                    Toast.makeText(getApplicationContext(), "Fields are empty", Toast.LENGTH_SHORT).show();
-                } else{
-                    Boolean remove = db.deleteService(service.getText().toString());
-                    if (remove == true) {
-                        Toast.makeText(getApplicationContext(), "Service delete: Successful", Toast.LENGTH_SHORT).show();
-                        service.setText("");
-                        hourlyRate.setText("");
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Service delete: Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
+            public void onClick(View v){
 
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String s1 = service.getText().toString();
-                if(s1.equals("")){
-                    Toast.makeText(getApplicationContext(), "Fields are empty", Toast.LENGTH_SHORT).show();
-                } else{
-                    Boolean edit = db.editService(service.getText().toString(), hourlyRate.getText().toString());
-                    if (edit == true) {
-                        Toast.makeText(getApplicationContext(), "Service Edit: Successful", Toast.LENGTH_SHORT).show();
-                        service.setText("");
-                        hourlyRate.setText("");
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Service Edit: Failed, no match found", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                Boolean insert = db.insertServiceFournisseur("",serviceName);
+                if (insert == true) {
+                    Toast.makeText(getApplicationContext(), "Service Adding Successful", Toast.LENGTH_SHORT).show();
+                } else {
+                Toast.makeText(getApplicationContext(), "Service Adding Failed", Toast.LENGTH_SHORT).show();
             }
-        });
+        }
+    });
 
-    }
+
+
+
+
     }
 }

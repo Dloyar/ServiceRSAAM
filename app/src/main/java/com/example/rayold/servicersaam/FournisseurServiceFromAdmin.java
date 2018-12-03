@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class FournisseurServiceFromAdmin extends AppCompatActivity {
     DatabaseHelper db;
     String serviceName;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +39,11 @@ public class FournisseurServiceFromAdmin extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 serviceName =(String) listView.getItemAtPosition(position);
-                boolean insert = db.insertServiceFournisseur(getIntent().getStringExtra("EMAIL"),(String) listView.getItemAtPosition(position));
-                if (insert = true ){
-                    //Intent j = new Intent (FournisseurServiceFromAdmin.this,AvailabilityFournisseur.class );
-                    Toast.makeText(getApplicationContext(), "service saved: successful ", Toast.LENGTH_SHORT).show();
-                   // startActivity(j);
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "service saved: fail", Toast.LENGTH_SHORT).show();
-                }
-
+               // user = db.findUser(getIntent().getStringExtra("EMAIL"));
+                Intent j = new Intent (FournisseurServiceFromAdmin.this,addServiceProfile.class );
+                //j.putExtra("EMAIL", user.getEmail());
+                j.putExtra("SERVICE", serviceName);
+                startActivity(j);
             }
         });
     }
